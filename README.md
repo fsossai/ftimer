@@ -45,7 +45,7 @@ Will produce the following **output**:
 
 ## Features
 
-### `horatio.tracker()` 
+### `horatio.step()` 
 Prints the description and the elapsed time in the same line. It is suggested for code sections that don't print any output.
 
   As a context:
