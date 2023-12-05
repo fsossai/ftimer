@@ -5,12 +5,13 @@ with open("README.md") as f:
 
 setup(
     name="horatio",
-    version="0.1.0",
+    version="0.1.3",
+    author="Federico Sossai",
     author_email="federico.sossai@gmail.com",
     url="http://github.com/fsossai/horatio",
     description="Time your python scripts easily and with style",
     long_description=readme,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=[]
+    install_requires=["fslog"]
 )
