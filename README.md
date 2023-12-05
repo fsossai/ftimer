@@ -3,6 +3,10 @@ Time your python scripts easily and with style. This tool uses [`fslog`](https:/
 
 The same classes can be used either through `with` or as a `@decorator`.
 
+```
+pip install horatio
+```
+
 ## Example
 
 ```python
