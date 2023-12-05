@@ -1,27 +1,27 @@
 # FTimer
-Time your python scripts easily and with style. This tool uses [`flog`](https://github.com/fsossai/flog) to format its output.
+Time your python scripts easily and with style. This tool uses [`fslog`](https://github.com/fsossai/fslog) to format its output.
 
 The same classes can be used either through `with` or as a `@decorator`.
 
 ## Example
 
 ```python
-import ftimer
-import flog
+import horatio
+import fslog
 import time
 
-@ftimer.section("Factorial computation", tail="Took {}")
+@horatio.section("Factorial computation", tail="Took {}")
 def fact(n):
     if n == 1:
-        flog.log("Reached base case")
+        fslog.log("Reached base case")
         return 1
-    flog.log("This is not the base case")
-    with ftimer.step("Sleeping for a second"):
+    fslog.log("This is not the base case")
+    with horatio.step("Sleeping for a second"):
         time.sleep(1)
     res = n * fact(n-1)
     return res
 
-ftimer.unit = "s" # or "ms", "us", "m", "h"
+horatio.unit = "s" # or "ms", "us", "m", "h"
 fact(4)
 ```
 Will produce the following **output**:
@@ -45,47 +45,47 @@ Will produce the following **output**:
 
 ## Features
 
-### `ftimer.tracker()` 
+### `horatio.tracker()` 
 Prints the description and the elapsed time in the same line. It is suggested for code sections that don't print any output.
 
   As a context:
 ```python
-with ftimer.step("Inverting the matrix"):
+with horatio.step("Inverting the matrix"):
   B = np.linalg.inv(A)
 ```
 As a decorator:
 ```python
-@ftimer.step("Inverting the matrix"):
+@horatio.step("Inverting the matrix"):
 def inv(A):
   return np.linalg.inv(A)
 ```
 Will produce something like `Invering the matrix ... took 0.123 s`.
 
-### `ftimer.section()`
+### `horatio.section()`
 It's useful when timing complex code with nested calls to other timed functions.
 
 As a decorator:
 ```python
-@ftimer.section():
+@horatio.section():
 def inv(A):
   return np.linalg.inv(A)
 ```
 As a context:
 ```python
-@ftimer.section()
+@horatio.section()
 def parse(file_name):
-    flog.log("File name:", file_name)
+    fslog.log("File name:", file_name)
     return None
 
-@ftimer.section()
+@horatio.section()
 def count_words(d):
     return 0
 
-@ftimer.section()
+@horatio.section()
 def main():
     d = parse("words.txt")
     n = count_words(d)
-    flog.log(n)
+    fslog.log(n)
 ```
 Will produce something like
 ```
@@ -98,18 +98,18 @@ Will produce something like
 └─ main: 4.701 s
 ```
 
-### `ftimer.flat()`
+### `horatio.flat()`
 It's useful when timing code that prints text and we want the output to be flat (no indentation).
 
 As a decorator:
 ```python
-@ftimer.flat():
+@horatio.flat():
 def inv(A):
   return np.linalg.inv(A)
 ```
  As a context:
 ```python
-with ftimer.flat("inv"):
+with horatio.flat("inv"):
   B = np.linalg.inv(A)
 ```
 Will produce something like
