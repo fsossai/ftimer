@@ -2,7 +2,7 @@ import time
 import flog
 
 unit = "s"
-no_text_default = "\033[0m\u2510"
+no_desc_default = "\033[0m\u2510"
 
 def format(t):
     scale = {"s":1, "ms":1000, "us":1000000, "m":1/60, "h":1/3600}
@@ -10,14 +10,14 @@ def format(t):
     return f"{t:.3f} {unit}"
 
 class step():
-    def __init__(self, text=None):
+    def __init__(self, desc=None):
         self.ts = []
-        self.text = text
+        self.desc = desc
 
     def __enter__(self):
-        if self.text is None:
-            self.text = ""
-        flog.log(self.text + " ... ", end="")
+        if self.desc is None:
+            self.desc = ""
+        flog.log(self.desc + " ... ", end="")
         self.ts.append(time.time())
         return self
 
@@ -27,8 +27,8 @@ class step():
         flog.plain("took {}\n".format(format(t)), end="")
 
     def __call__(self, f):
-        if self.text is None:
-            self.text = f.__name__
+        if self.desc is None:
+            self.desc = f.__name__
         def wrapper(*args, **kwargs):
             self.__enter__()
             y = f(*args, **kwargs)
@@ -37,14 +37,16 @@ class step():
         return wrapper
 
 class flat():
-    def __init__(self, text=None):
+    def __init__(self, desc=None, tail=None):
         self.ts = []
-        self.text = text
+        self.desc = desc
+        self.tail = tail
 
     def __enter__(self):
-        if self.text is None:
-            self.text = "?"
-        flog.log(f"[*] Running: {self.text}")
+        if self.desc is None:
+            flog.log("[*]")
+        else:
+            flog.log(f"[*] {self.desc}")
         self.ts.append(time.time())
         return self
 
@@ -52,11 +54,17 @@ class flat():
         t = self.ts.pop()
         t = time.time() - t
         tf = format(t)
-        flog.log(f"[*] {self.text}: took {tf}")
+        if self.tail is None:
+            if self.desc is None:
+                flog.log("[*] {}".format(tf))
+            else:
+                flog.log("[*] {}: {}".format(self.desc, tf))
+        else:
+            flog.log("[*] {}".format(self.tail).format(self.desc, tf))
 
     def __call__(self, f):
-        if self.text is None:
-            self.text = f.__name__
+        if self.desc is None:
+            self.desc = f.__name__
         def wrapper(*args, **kwargs):
             self.__enter__()
             y = f(*args, **kwargs)
@@ -65,25 +73,30 @@ class flat():
         return wrapper
 
 class section():
-    def __init__(self, text=None):
+    def __init__(self, desc=None, tail=None):
         self.ts = []
-        self.text = text
+        self.desc = desc
+        self.tail = tail
 
     def __enter__(self):
-        if self.text is None:
-            self.text = no_text_default
-        flog.open(self.text)
+        if self.desc is None:
+            self.desc = no_desc_default
+        flog.open(self.desc)
         self.ts.append(time.time())
         return self
 
     def __exit__(self, *args):
         t = self.ts.pop()
         t = time.time() - t
-        flog.close("Elapsed: {}".format(format(t)))
+        flog.close(self.tail.format(format(t)))
+
 
     def __call__(self, f):
-        if self.text is None:
-            self.text = f.__name__
+        if self.desc is None:
+            self.desc = f.__name__
+        if self.tail is None:
+            self.tail = "{}: {}".format(self.desc, "{}")
+
         def wrapper(*args, **kwargs):
             self.__enter__()
             y = f(*args, **kwargs)
@@ -91,4 +104,5 @@ class section():
             return y
         return wrapper
 
+flog.param["indent.str"] += " "
 flog.param["open.style"] = flog.style.BOLD
