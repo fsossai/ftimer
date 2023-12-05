@@ -24,7 +24,7 @@ class step():
     def __exit__(self, *args):
         t = self.ts.pop()
         t = time.time() - t
-        flog.plain("took {}\n".format(format(t)), end="")
+        flog.plain("done in {}\n".format(format(t)), end="")
 
     def __call__(self, f):
         if self.desc is None:
