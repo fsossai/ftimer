@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="horatio",
-    version="0.1.4",
+    version="0.1.5",
     author="Federico Sossai",
     author_email="federico.sossai@gmail.com",
     url="http://github.com/fsossai/horatio",
