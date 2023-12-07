@@ -8,7 +8,6 @@ no_desc_default = "\033[0m\u2510"
 def format_time(t, fmt=None):
     gfmt = globals()["fmt"]
     fmt = fmt or gfmt
-    t = 0*86400 + 0*11*3600 + 0*12*60 + 1.12
     d = dict()
     d["f"] = int(t*1000) / 1000
     d["ms"] = int(t * 1000)
