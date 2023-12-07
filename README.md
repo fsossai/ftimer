@@ -14,7 +14,7 @@ import horatio
 import fslog
 import time
 
-@horatio.section("Factorial computation", tail="Took {}")
+@horatio.section("Factorial computation", tail="{0} took {1}")
 def fact(n):
     if n == 1:
         fslog.log("Reached base case")
@@ -25,8 +25,12 @@ def fact(n):
     res = n * fact(n-1)
     return res
 
-horatio.unit = "s" # or "ms", "us", "m", "h"
-fact(4)
+@horatio.section():
+def main():
+    fact(4)
+
+main()
+
 ```
 Will produce the following **output**:
 ```
