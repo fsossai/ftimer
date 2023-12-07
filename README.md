@@ -25,30 +25,31 @@ def fact(n):
     res = n * fact(n-1)
     return res
 
-@horatio.section():
+@horatio.section()
 def main():
     fact(4)
 
 main()
-
 ```
 Will produce the following **output**:
 ```
-┌─ Factorial computation
-│  This is not the base case
-│  Sleeping for a second ... done in 1.001 s
+┌─ main
 │  ┌─ Factorial computation
 │  │  This is not the base case
-│  │  Sleeping for a second ... done in 1.003 s
+│  │  Sleeping for a second ... done in 1.005s
 │  │  ┌─ Factorial computation
 │  │  │  This is not the base case
-│  │  │  Sleeping for a second ... done in 1.002 s
+│  │  │  Sleeping for a second ... done in 1.003s
 │  │  │  ┌─ Factorial computation
-│  │  │  │  Reached base case
-│  │  │  └─ Took 0.000 s
-│  │  └─ Took 1.003 s
-│  └─ Took 2.006 s
-└─ Took 3.007 s
+│  │  │  │  This is not the base case
+│  │  │  │  Sleeping for a second ... done in 1.004s
+│  │  │  │  ┌─ Factorial computation
+│  │  │  │  │  Reached base case
+│  │  │  │  └─ Factorial computation took < 1 ms
+│  │  │  └─ Factorial computation took 1.005s
+│  │  └─ Factorial computation took 2.009s
+│  └─ Factorial computation took 3.014s
+└─ main: 3.015s
 ```
 
 ## Features
