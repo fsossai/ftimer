@@ -54,24 +54,10 @@ Will produce the following **output**:
 
 ## Features
 
-### `horatio.step()` 
-Prints the description and the elapsed time in the same line. It is suggested for code sections that don't print any output.
-
-  As a context:
-```python
-with horatio.step("Inverting the matrix"):
-  B = np.linalg.inv(A)
-```
-As a decorator:
-```python
-@horatio.step("Inverting the matrix"):
-def inv(A):
-  return np.linalg.inv(A)
-```
-Will produce something like `Invering the matrix ... took 0.123 s`.
-
 ### `horatio.section()`
 It's useful when timing complex code with nested calls to other timed functions.
+When used as a decorator with no arguments it uses the function name as a
+description of the section.
 
 As a decorator:
 ```python
@@ -101,11 +87,28 @@ Will produce something like
 ┌─ main
 │  ┌─ parse
 │  │  File name: words.txt
-│  └─ parse: 0.123 s
+│  └─ parse: 123ms
 │  ┌─ count_words
-│  └─ count_words: 4.567 s
-└─ main: 4.701 s
+│  └─ count_words: 4.567s
+└─ main: 4.701s
 ```
+
+### `horatio.step()` 
+Prints the description and the elapsed time in the same line. It is suggested for code sections that don't print any output.
+
+  As a context:
+```python
+with horatio.step("Inverting the matrix"):
+  B = np.linalg.inv(A)
+```
+As a decorator:
+```python
+@horatio.step("Inverting the matrix"):
+def inv(A):
+  return np.linalg.inv(A)
+```
+Will produce something like `Invering the matrix ... done in 123ms`.
+
 
 ### `horatio.flat()`
 It's useful when timing code that prints text and we want the output to be flat (no indentation).
@@ -124,8 +127,30 @@ with horatio.flat("inv"):
 Will produce something like
 ```
 [*] inv
-[*] inv: 0.123 s
+[*] inv: 123ms
 ```
 
+## Time formatting
 
+To get a customized time format just pass a `fmt` argument when calling
+Horatio's functions, or set it everywhere with `horatio.fmt`.
+Time is formatted automatically if `fmt=None`.
+Here are the complete list of time symbols:
 
+| Symbol | Meaning                                   |
+| ------ | ----------------------------------------- |
+| `{f}`  | Total seconds with millisecond precision  |
+| `{ms}` | Total milliseconds                        |
+| `{s}`  | Total seconds                             |
+| `{m}`  | Total minutes                             |
+| `{h}`  | Total hours                               |
+| `{S}`  | Seconds of a day-hour-min-sec-like format |
+| `{S}`  | Minutes of a day-hour-min-sec-like format |
+| `{H}`  | Hours of a day-hour-min-sec-like format   |
+| `{D}`  | Days of a day-hour-min-sec-like format    |
+
+Some examples:
+```
+horatio.section(fmt="minutes={m} seconds={s}")
+horatio.fmt="{D} days {H:02}:{M:02}:{S:02}"
+```
