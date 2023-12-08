@@ -145,7 +145,7 @@ Here are the complete list of time symbols:
 | `{m}`  | Total minutes                             |
 | `{h}`  | Total hours                               |
 | `{S}`  | Seconds of a day-hour-min-sec-like format |
-| `{S}`  | Minutes of a day-hour-min-sec-like format |
+| `{M}`  | Minutes of a day-hour-min-sec-like format |
 | `{H}`  | Hours of a day-hour-min-sec-like format   |
 | `{D}`  | Days of a day-hour-min-sec-like format    |
 
