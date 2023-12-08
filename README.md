@@ -150,7 +150,5 @@ Here are the complete list of time symbols:
 | `{D}`  | Days of a day-hour-min-sec-like format    |
 
 Some examples:
-```
-horatio.section(fmt="minutes={m} seconds={s}")
-horatio.fmt="{D} days {H:02}:{M:02}:{S:02}"
-```
+- `horatio.section(fmt="minutes={m} seconds={s}")`
+- `horatio.fmt="{D} days {H:02}:{M:02}:{S:02}"`
